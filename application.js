@@ -3,12 +3,15 @@ const colors = document.getElementsByClassName("jsColor")
 const ctx = canvas.getContext("2d")
 const range = document.getElementById("js-range")
 const mode = document.getElementById("js-Mode")
+const save= document.getElementById("js-Save")
 
 const initialColor = "#2c2c2c"
 
 canvas.width = 1080
 canvas.height = 720
 
+ctx.fillStyle = "white"
+ctx.fillRect(0, 0, 1080, 720)
 ctx.strokeStyle = initialColor
 ctx.lineWidth = 2.5
 ctx.fillStyle = initialColor
@@ -77,12 +80,29 @@ function handleCanvasClick(event) {
 
 }
 
+function handleContextMenu(event) {
+    event.preventDefault()
+}
+
+function handleSaveClick(event) {
+    const image = canvas.toDataURL("image/png")
+    const link = document.createElement("a");
+    link.href = image
+    link.download = "New image"
+    link.click()
+}
+
 if (canvas) {
     canvas.addEventListener("mousemove", onMouseMove)
     canvas.addEventListener("mousedown", paintStart)
     canvas.addEventListener("mouseup", paintStop)
     canvas.addEventListener("mouseleave", paintStop)
     canvas.addEventListener("click", handleCanvasClick)
+    canvas.addEventListener("contextmenu", handleContextMenu)
+}
+
+function drawImageData(image) {
+    
 }
 
 Array.from(colors).forEach(color => color.addEventListener("click", handleColor))
@@ -93,4 +113,8 @@ if (range) {
 
 if (mode) {
     mode.addEventListener("click", handleModeClick)
+}
+
+if (save) {
+    save.addEventListener("click", handleSaveClick)
 }
