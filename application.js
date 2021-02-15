@@ -3,7 +3,8 @@ const colors = document.getElementsByClassName("jsColor")
 const ctx = canvas.getContext("2d")
 const range = document.getElementById("js-range")
 const mode = document.getElementById("js-Mode")
-const save= document.getElementById("js-Save")
+const save = document.getElementById("js-Save")
+const input = document.getElementById("real-input")
 
 const initialColor = "#2c2c2c"
 
@@ -101,8 +102,19 @@ if (canvas) {
     canvas.addEventListener("contextmenu", handleContextMenu)
 }
 
-function drawImageData(image) {
-    
+function handleInputChange(e) {
+    let file = e.target.files
+    let reader = new FileReader()
+
+    reader.onload = function (e) {
+        const image = new Image()
+        image.onload = function () {
+            ctx.drawImage(image, 0, 0, 1080, 720)
+        }
+        image.src = e.target.result
+    }
+    reader.readAsDataURL(file[0])
+
 }
 
 Array.from(colors).forEach(color => color.addEventListener("click", handleColor))
@@ -117,4 +129,8 @@ if (mode) {
 
 if (save) {
     save.addEventListener("click", handleSaveClick)
+}
+
+if (input) {
+    input.addEventListener("change", handleInputChange)
 }
